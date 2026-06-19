@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>熨斗メーカー</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&family=Zen+Antique&family=Hannari&family=Sawarabi+Mincho&family=Shippori+Mincho:wght@400;700&family=Klee+One:wght@400;600&family=Noto+Serif+JP:wght@400;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="loading-overlay">Webフォント読み込み中...</div>
+
+  <div id="toolbar">
+    <div class="header-area">
+      <h1 class="main-title">熨斗メーカー</h1>
+      <span class="copyright">© 2026 Aromatibus.</span>
+      
+      <div class="header-right-group">
+        <span class="print-settings-label">用紙サイズ:</span>
+        <select id="ui_paper_size" style="height: 28px;">
+          <option value="297,210">A4 (横)</option>
+          <option value="210,297">A4 (縦)</option>
+          <option value="420,297">A3 (横)</option>
+          <option value="364,257">B4 (横)</option>
+          <option value="257,182">B5 (横)</option>
+        </select>
+        <span class="print-settings-label">印刷倍率:</span>
+        <input type="number" id="ui_print_scale" value="100" min="10" max="200" style="height: 24px;">
+        <span class="print-settings-label">%</span>
+        <button class="btn-print" onclick="window.print()">印 刷</button>
+      </div>
+    </div>
+
+    <!-- 表書き行 -->
+    <div class="row">
+      <span class="group-label">表書き</span>
+      <div class="group">
+        <select id="ui_purpose_sel"></select>
+        <input id="ui_om_text" placeholder="内容入力">
+        <span class="item-name">書体:</span>
+        <select id="ui_font_sel" style="width:130px">
+          <optgroup label="筆・楷書系（おすすめ）">
+            <option value="'Yuji Syuku', serif">Yuji Syuku (力強い毛筆)</option>
+            <option value="'Klee One', sans-serif">Klee One (端正な楷書風)</option>
+          </optgroup>
+          <optgroup label="明朝体系（上品・高級）">
+            <option value="'Shippori Mincho', serif">しっぽり明朝 (非常に優雅)</option>
+            <option value="'Sawarabi Mincho', serif">さわらび明朝 (誠実・標準)</option>
+            <option value="'Noto Serif JP', serif">Noto Serif JP (現代的・綺麗)</option>
+            <option value="'Hannari', serif">Hannari (はんなり明朝)</option>
+          </optgroup>
+          <optgroup label="システムフォント">
+            <option value="'Yu Mincho', '游明朝', serif">游明朝 (標準搭載・最高峰)</option>
+            <option value="'MS Mincho', 'MS 明朝', serif">MS 明朝</option>
+          </optgroup>
+          <optgroup label="その他" id="optgroup_system"></optgroup>
+        </select>
+        <button class="btn-sysfont" id="btn_manual_font">フォント手入力</button>
+        <button class="btn-sysfont" id="btn_load_fonts">システム読込</button>
+      </div>
+      <div class="group">
+        <span class="item-name">サイズ:</span>
+        <input type="range" id="ui_om_size_r" min="0" max="800" value="80">
+        <input type="number" id="ui_om_size" value="80">
+      </div>
+      <div class="group">
+        <span class="item-name">縦位置</span>
+        <input type="range" id="ui_om_y_r" min="-10" max="400" value="20">
+        <input type="number" id="ui_om_y" value="20">
+      </div>
+      <div class="group">
+        <span class="item-name">横位置</span>
+        <input type="range" id="ui_om_x_r" min="0" max="420" value="136">
+        <input type="number" id="ui_om_x" value="136">
+      </div>
+    </div>
+
+    <!-- 贈り主行 -->
+    <div class="row">
+      <span class="group-label">贈り主</span>
+      <div class="group">
+        <input class="ok-input" placeholder="氏名1">
+        <input class="ok-input" placeholder="氏名2">
+        <input class="ok-input" placeholder="氏名3">
+        <input class="ok-input" placeholder="氏名4">
+        <input class="ok-input" placeholder="氏名5">
+      </div>
+      <div class="group">
+        <span class="item-name">サイズ:</span>
+        <input type="range" id="ui_ok_size_r" min="0" max="800" value="40">
+        <input type="number" id="ui_ok_size" value="40">
+      </div>
+      <div class="group">
+        <span class="item-name">縦位置</span>
+        <input type="range" id="ui_ok_y_r" min="-10" max="400" value="110">
+        <input type="number" id="ui_ok_y" value="110">
+      </div>
+      <div class="group">
+        <span class="item-name">横位置</span>
+        <input type="range" id="ui_ok_x_r" min="0" max="420" value="141">
+        <input type="number" id="ui_ok_x" value="141">
+      </div>
+    </div>
+
+    <!-- 熨斗行 -->
+    <div class="row">
+      <span class="group-label">熨斗</span>
+      <div class="group">
+        <select id="ui_noshi_sel" style="width:180px"></select>
+      </div>
+      <div class="group">
+        <span class="item-name">サイズ:</span>
+        <input type="range" id="ui_n_w_r" min="5" max="150" value="16">
+        <input type="number" id="ui_n_w" value="16">
+      </div>
+      <div class="group">
+        <span class="item-name">縦位置</span>
+        <input type="range" id="ui_n_y_r" min="0" max="400" value="10">
+        <input type="number" id="ui_n_y" value="10">
+      </div>
+      <div class="group">
+        <span class="item-name">横位置</span>
+        <input type="range" id="ui_n_x_r" min="0" max="420" value="175">
+        <input type="number" id="ui_n_x" value="175">
+      </div>
+    </div>
+
+    <!-- 水引行 -->
+    <div class="row">
+      <span class="group-label">水引</span>
+      <div class="group">
+        <select id="ui_mizuhiki_sel" style="width:180px"></select>
+      </div>
+      <div class="group">
+        <span class="item-name">サイズ:</span>
+        <input type="range" id="ui_m_w_r" min="50" max="1200" value="320">
+        <input type="number" id="ui_m_w" value="320">
+      </div>
+      <div class="group">
+        <span class="item-name">縦位置</span>
+        <input type="range" id="ui_m_y_r" min="-50" max="400" value="40">
+        <input type="number" id="ui_m_y" value="40">
+      </div>
+      <div class="group">
+        <span class="item-name">横位置</span>
+        <input type="range" id="ui_m_x_r" min="-200" max="200" value="0">
+        <input type="number" id="ui_m_x" value="0">
+      </div>
+    </div>
+  </div>
+
+  <div id="paper-container">
+    <div id="paper">
+      <img id="mizuhiki_img" class="draggable">
+      <img id="noshi_img" class="draggable">
+      <div id="canvas_okurinushi" class="vtext draggable"></div>
+      <div id="canvas_omotegaki" class="vtext draggable"></div>
+    </div>
+  </div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
