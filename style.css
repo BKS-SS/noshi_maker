@@ -1,0 +1,233 @@
+:root {
+  --bg-color: #eee;
+  --panel-color: #fff;
+  --accent-color: #ff8000;
+  --border-color: #ddd;
+
+  --w-label: 90px;
+  --w-main: 700px;
+  --w-size: 200px;
+  --w-pos-y: 200px;
+  --w-pos-x: 200px;
+
+  /* 画面表示用の倍率設定 */
+  --display-scale: 0.8;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-color);
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
+/* ツールバー設定 */
+#toolbar {
+  background: var(--panel-color);
+  padding: 5px 25px 10px 25px;
+  border-bottom: 2px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-area {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  height: 40px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 8px;
+}
+
+.main-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--accent-color);
+  margin: 0;
+}
+
+/* 用紙・印刷設定 */
+.header-right-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.print-settings-label {
+  font-size: 11px;
+  font-weight: bold;
+  color: #666;
+}
+
+.copyright {
+  font-size: 10px;
+  color: #999;
+}
+
+/* 入力行のグリッド設定 */
+.row {
+  display: grid;
+  grid-template-columns:
+    var(--w-label)
+    var(--w-main)
+    var(--w-size)
+    var(--w-pos-y)
+    var(--w-pos-x);
+  align-items: center;
+  min-height: 32px;
+  gap: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 2px 0;
+}
+
+.row:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.group-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--accent-color);
+}
+
+.item-name {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+/* プレビュー用紙設定 */
+#paper-container {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+}
+
+#paper {
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(0,0,0,0.15);
+  transform: scale(var(--display-scale));
+  transform-origin: top center;
+}
+
+.draggable {
+  cursor: move;
+  user-select: none;
+  touch-action: none;
+}
+
+.vtext {
+  writing-mode: vertical-rl;
+  position: absolute;
+  white-space: pre;
+  line-height: 1.1;
+}
+
+#canvas_omotegaki { z-index: 100; }
+#canvas_okurinushi { z-index: 80; }
+#noshi_img { z-index: 60; position: absolute; }
+#mizuhiki_img { z-index: 40; position: absolute; }
+
+/* フォーム要素スタイル */
+input[type="number"] {
+  width: 45px;
+  height: 24px;
+  border: 1px solid #bbb;
+  font-size: 13px;
+  text-align: center;
+}
+
+input[type="range"] {
+  width: 100px;
+  cursor: pointer;
+  margin: 0;
+}
+
+.ok-input {
+  width: 100px;
+  height: 28px;
+  border: 1px solid #bbb;
+  font-size: 13px;
+  padding: 0 5px;
+}
+
+select {
+  height: 30px;
+  border: 1px solid #bbb;
+  font-size: 13px;
+  padding: 0 8px;
+}
+
+#ui_om_text {
+  width: 120px;
+  height: 24px;
+  border: 1px solid #bbb;
+  font-size: 13px;
+}
+
+.btn-print {
+  background: var(--accent-color);
+  color: #fff;
+  border: none;
+  padding: 6px 25px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.btn-sysfont {
+  background: #666;
+  color: #fff;
+  border: none;
+  padding: 3px 8px;
+  font-size: 10px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+/* 印刷用設定 */
+@media print {
+  @page { 
+    size: auto; /* JSで動的に設定 */
+    margin: 0; 
+  }
+  body { background: white; }
+  #toolbar { display: none !important; }
+  #paper-container { padding: 0; display: block; }
+  #paper {
+    margin: 0;
+    border: none;
+    box-shadow: none;
+    transform: scale(var(--print-scale, 1.0)) !important;
+    transform-origin: top left;
+  }
+}
+
+#loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loaded #loading-overlay {
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.2s;
+}
